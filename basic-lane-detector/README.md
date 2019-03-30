@@ -1,10 +1,11 @@
 # Basic Lane Tracking Theory & Example
 
 Table of Contents:
-    1. [Getting Started](#getting-started)
-    2. [How It All Works](#how-it-all-works)
-        * [Importing Image or Video](#importing-image-or-video)
-        * [Cannying](#cannying)
+
+1. [Getting Started](#getting-started)
+2. [How It All Works](#how-it-all-works)
+    * [Importing Image or Video](#importing-image-or-video)
+    * [Cannying](#cannying)
 
 ## Getting Started
 

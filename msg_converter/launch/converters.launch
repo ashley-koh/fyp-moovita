@@ -1,0 +1,39 @@
+<!-- 
+This launch file is used to launch these two nodes:
+    
+    encoder_converter ( Converts Encoder to Odometry msg )
+    sensor_reframer ( Changes all their frame_id to their specified frames ) 
+-->
+
+<launch>
+
+    
+
+    <node 
+        pkg="rosbag"
+        type="play"
+        name="player"
+        output="screen"
+        args="--clock -r 1 /home/moovita2018pc03/BagFiles/ES-FYP/2019-05-02-16-08-25.bag"
+    />
+    <node 
+        pkg="msg_converter"
+        type="encoder_to_odom.py"
+        name="encoder_converter"
+    />
+    <node 
+        pkg="msg_converter" 
+        type="reframe_sensors.py" 
+        name="sensor_reframer"
+    />
+    <node
+        pkg="imu_filter_madgwick"
+        type="imu_filter_node"
+        name="imu_filter"
+    >
+        <rosparam 
+            command='load' 
+            file='$(find imu_filter_madgwick)/params/imu_filter.yaml' 
+        />
+    </node>
+</launch>

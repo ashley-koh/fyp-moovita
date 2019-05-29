@@ -1,0 +1,28 @@
+# All parameters can be found in this link:
+# http://wiki.ros.org/imu_filter_madgwick#ROS_API
+
+gain: 0.1
+
+zeta: 0.0
+
+mag_bias_x: 0.0
+mag_bias_y: 0.0
+mag_bias_z: 0.0
+
+orientation_stddev: 0.0
+
+world_frame: enu # Default for Kinetic: "nwu"
+
+use_mag: false
+
+use_magnetic_field: false
+
+fixed_frame: odom
+
+publish_tf: true
+
+reverse_tf: false
+
+constant_dt: 0.0 # Automatically uses message headers
+
+publish_debug_topics: false

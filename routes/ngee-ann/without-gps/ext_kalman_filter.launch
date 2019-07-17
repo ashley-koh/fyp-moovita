@@ -1,0 +1,41 @@
+<launch>
+
+    <node 
+      pkg="rosbag"
+      type="play"
+      name="player"
+      output="screen"
+      args="--clock -r 1 /home/moovita2018pc03/BagFiles/ES-FYP/ngee-ann.bag"
+    />
+    <node 
+        pkg="msg_converter"
+        type="encoder_to_odom.py"
+        name="encoder_converter"
+    />
+    <node 
+        pkg="msg_converter" 
+        type="reframe_sensors_ngee_ann.py" 
+        name="sensor_reframer"
+    />
+
+    <node pkg="tf" type="static_transform_publisher" name="link1_broadcaster" args="0 0 0 1.57 0 0 0 /base_footprint /imu 100"/>
+
+    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se" clear_params="true">
+        <rosparam command="load" file="$(find robot_localization)/routes/ngee-ann/without-gps/ext_kalman_filter.yaml" />
+
+        <!--  Placeholder for output topic remapping
+        <remap from="odometry/filtered" to=""/>
+        <remap from="accel/filtered" to=""/>
+        -->
+    </node>
+
+    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find msg_converter)/rviz/ekf.rviz"/>
+
+
+    <!-- <node
+        pkg="msg_converter"
+        type="plot.py"
+        name="plotter"
+    /> -->
+
+</launch>

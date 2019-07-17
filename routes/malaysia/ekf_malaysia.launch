@@ -1,0 +1,38 @@
+<launch>
+
+    <node 
+      pkg="rosbag"
+      type="play"
+      name="player"
+      output="screen"
+      args="--clock -r 1 /home/moovita2018pc03/BagFiles/ES-FYP/malaysia.bag"
+    />
+
+    <rosparam command="load" file="$(find robot_localization)/routes/malaysia/ekf_malaysia.yaml"/>
+
+    <node
+        pkg="msg_converter"
+        type="reframe_sensors_malaysia.py"
+        name="sensor_reframer"
+    />
+    <node
+        pkg="msg_converter"
+        type="sensor_accuracy.py"
+        name="sensor_accuracy"
+    />
+
+    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se_odom" clear_params='true' />
+
+    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se_map" clear_params='true'>
+        <remap from='odometry/filtered' to="odometry/filtered_map"/>
+    </node>
+
+    <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform" clear_params="true">
+        <remap from="odometry/filtered" to="odometry/filtered_map"/>
+    </node>
+
+    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find msg_converter)/rviz/ekf_malaysia.rviz"/>
+
+    <node pkg="rostopic" name="print_acc" type="rostopic" args="echo /sensors/accuracy" output="screen" launch-prefix="xterm -e"/>
+
+</launch>
